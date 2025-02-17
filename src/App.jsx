@@ -7,7 +7,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { mean, median, standardDeviation } from "simple-statistics";
@@ -160,26 +159,27 @@ function App() {
           width={graphData.length < 10 ? "100%" : graphData.length * 20}
           height={400}
         >
-          <LineChart
-            data={graphData}
-            margin={{ top: 20, right: 20, left: 20, bottom: 80 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" angle={-45} textAnchor="end" interval={0} />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            {selectedColumns.map((column, index) => (
-              <Line
-                key={column}
-                type="monotone"
-                dataKey={column}
-                stroke={`hsl(${
-                  (index * 360) / selectedColumns.length
-                }, 70%, 50%)`}
-              />
-            ))}
-          </LineChart>
+          {graphData.length > 0 && (
+            <LineChart
+              data={graphData}
+              margin={{ top: 20, right: 20, left: 20, bottom: 80 }}
+            >
+              <CartesianGrid strokeDasharray="none" />
+              <XAxis dataKey="name" angle={-45} textAnchor="end" interval={0} />
+              <YAxis />
+              <Tooltip />
+              {selectedColumns.map((column, index) => (
+                <Line
+                  key={column}
+                  type="monotone"
+                  dataKey={column}
+                  stroke={`hsl(${
+                    (index * 360) / selectedColumns.length
+                  }, 70%, 50%)`}
+                />
+              ))}
+            </LineChart>
+          )}
         </ResponsiveContainer>
       </div>
 
