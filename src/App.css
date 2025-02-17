@@ -1,0 +1,139 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1f1f1f;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+h1, h3 {
+  color: #ffffff;
+  margin: 20px 0 0 0;
+}
+
+select {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #444444;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 16px;
+}
+
+select:focus {
+  outline: none;
+  border-color: #6c6c6c;
+}
+
+button {
+  background-color: #333333;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #444444;
+}
+
+button:focus {
+  outline: none;
+}
+
+input[type="file"] {
+  background-color: #333333;
+  color: #ffffff;
+  padding: 10px;
+  border: 1px solid #444444;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 16px;
+}
+
+.graph-container {
+  margin-top: 20px;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #ffffff;
+  background-color: #333333;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.responsive-container {
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.container {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.recharts-cartesian-axis-tick-value {
+  fill: #ffffff;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.recharts-cartesian-axis-tick {
+  fill: #ffffff;
+}
+
+.recharts-tooltip-item {
+  color: #000000;
+  background-color: #ffffff;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.scrollable-graph-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.insights {
+  margin-top: 25px;
+  background-color: #333333;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+  word-break: break-word;
+}
+
+.insights pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 0;
+}
