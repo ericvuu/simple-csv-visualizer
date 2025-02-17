@@ -69,8 +69,9 @@ function App() {
     return data.map((row) => {
       let rowData = { name: row[columns[0]] };
       numericCols.forEach((column) => {
-        if (!isNaN(parseFloat(row[column]))) {
-          rowData[column] = parseFloat(row[column]);
+        const parsedValue = parseFloat(row[column]);
+        if (!isNaN(parsedValue)) {
+          rowData[column] = parsedValue;
         }
       });
       return rowData;
@@ -88,7 +89,7 @@ function App() {
 
   // Generate Insights
   const generateInsights = (parsedData, numericCols) => {
-    let insightsMessage = "Insights:\n\n";
+    let insightsMessage = "";
 
     numericCols.forEach((col) => {
       const columnData = parsedData
@@ -124,6 +125,24 @@ function App() {
   return (
     <div className="container">
       <h1>CSV Data Visualization</h1>
+
+      <h3>How to Use</h3>
+      <div className="info-section">
+        <p>
+          Upload a CSV file to visualize the data. The tool allows you to select
+          numeric columns to generate a line graph. Insights such as average,
+          median, standard deviation, minimum, maximum, and trend are displayed
+          for each selected numeric column.
+        </p>
+        <h4>CSV Format Requirements:</h4>
+        <ul>
+          <li>Header row with column names.</li>
+          <li>Numeric columns for analysis (e.g., "Sales", "Temperature").</li>
+          <li>String columns (e.g., "Date", "Category") for X-axis labels.</li>
+          <li>Avoid mixed data types in a column.</li>
+        </ul>
+      </div>
+
       <input type="file" accept=".csv" onChange={handleFileUpload} />
 
       <h3>Select Columns</h3>
@@ -137,13 +156,16 @@ function App() {
 
       <h3>Line Graph: {selectedColumns.join(" & ")}</h3>
       <div className="scrollable-graph-container">
-        <ResponsiveContainer width={graphData.length * 20} height={400}>
+        <ResponsiveContainer
+          width={graphData.length < 10 ? "100%" : graphData.length * 20}
+          height={400}
+        >
           <LineChart
             data={graphData}
             margin={{ top: 20, right: 20, left: 20, bottom: 80 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" angle={-45} textAnchor="end" interval={1} />
+            <XAxis dataKey="name" angle={-45} textAnchor="end" interval={0} />
             <YAxis />
             <Tooltip />
             <Legend />
