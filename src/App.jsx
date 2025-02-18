@@ -49,19 +49,22 @@ function App() {
   };
 
   // Clean and Filter Data
-  const cleanData = (parsedData) => {
-    return parsedData
-      .map((row) => {
-        let cleanedRow = {};
-        Object.keys(row).forEach((col) => {
-          let value = row[col]?.trim();
-          cleanedRow[col] =
-            value === "" || isNaN(value) ? value : parseFloat(value);
-        });
-        return cleanedRow;
-      })
-      .filter((row) => Object.values(row).some((val) => val !== ""));
-  };
+ const cleanData = (parsedData) => {
+   return parsedData
+     .map((row) => {
+       let cleanedRow = {};
+       Object.keys(row).forEach((col) => {
+         let value = row[col]?.trim();
+         if (value.startsWith("$")) {
+           value = value.replace(/[$,]/g, "");
+         }
+         cleanedRow[col] =
+           value === "" || isNaN(value) ? value : parseFloat(value);
+       });
+       return cleanedRow;
+     })
+     .filter((row) => Object.values(row).some((val) => val !== ""));
+ };
 
   // Generate Graph Data
   const generateGraphData = (data, columns, numericCols) => {
