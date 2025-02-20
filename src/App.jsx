@@ -8,6 +8,8 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  BarChart,
+  Bar,
 } from "recharts";
 import { mean, median, standardDeviation } from "simple-statistics";
 
@@ -17,6 +19,7 @@ function App() {
   const [columns, setColumns] = useState([]);
   const [numericColumns, setNumericColumns] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState([]);
+  const [chartType, setChartType] = useState("line");
   const [insights, setInsights] = useState("");
 
   // Handle CSV Upload
@@ -48,29 +51,28 @@ function App() {
     });
   };
 
-  // Clean and Filter Data
- const cleanData = (parsedData) => {
-   return parsedData
-     .map((row) => {
-       let cleanedRow = {};
-       Object.keys(row).forEach((col) => {
-         let value = row[col]?.trim();
-         if (value.startsWith("$")) {
-           value = value.replace(/[$,]/g, "");
-         }
-         cleanedRow[col] =
-           value === "" || isNaN(value) ? value : parseFloat(value);
-       });
-       return cleanedRow;
-     })
-     .filter((row) => Object.values(row).some((val) => val !== ""));
- };
 
-  // Generate Graph Data
-  const generateGraphData = (data, columns, numericCols) => {
+  const cleanData = (parsedData) => {
+    return parsedData
+      .map((row) => {
+        let cleanedRow = {};
+        Object.keys(row).forEach((col) => {
+          let value = row[col]?.trim();
+          if (value.startsWith("$")) {
+            value = value.replace(/[$,]/g, "");
+          }
+          cleanedRow[col] =
+            value === "" || isNaN(value) ? value : parseFloat(value);
+        });
+        return cleanedRow;
+      })
+      .filter((row) => Object.values(row).some((val) => val !== ""));
+  };
+
+  const generateGraphData = (data, columns, selectedCols) => {
     return data.map((row) => {
       let rowData = { name: row[columns[0]] };
-      numericCols.forEach((column) => {
+      selectedCols.forEach((column) => {
         const parsedValue = parseFloat(row[column]);
         if (!isNaN(parsedValue)) {
           rowData[column] = parsedValue;
@@ -80,7 +82,6 @@ function App() {
     });
   };
 
-  // Handle Column Selection
   const handleColumnSelection = (event) => {
     const selected = Array.from(
       event.target.selectedOptions,
@@ -89,7 +90,11 @@ function App() {
     setSelectedColumns(selected);
   };
 
-  // Generate Insights
+
+  const handleChartTypeChange = (e) => {
+    setChartType(e.target.value);
+  };
+
   const generateInsights = (parsedData, numericCols) => {
     let insightsMessage = "";
 
@@ -115,7 +120,6 @@ function App() {
     setInsights(insightsMessage);
   };
 
-  // Detect Trend
   const detectTrend = (data) => {
     const trend = data.reduce((acc, val, index, arr) => {
       if (index === 0) return acc;
@@ -132,17 +136,10 @@ function App() {
       <div className="info-section">
         <p>
           Upload a CSV file to visualize the data. The tool allows you to select
-          numeric columns to generate a line graph. Insights such as average,
+          numeric columns to generate a single chart. Insights such as average,
           median, standard deviation, minimum, maximum, and trend are displayed
           for each selected numeric column.
         </p>
-        <h4>CSV Format Requirements:</h4>
-        <ul>
-          <li>Header row with column names.</li>
-          <li>Numeric columns for analysis (e.g., "Sales", "Temperature").</li>
-          <li>String columns (e.g., "Date", "Category") for X-axis labels.</li>
-          <li>Avoid mixed data types in a column.</li>
-        </ul>
       </div>
 
       <input type="file" accept=".csv" onChange={handleFileUpload} />
@@ -156,13 +153,19 @@ function App() {
         ))}
       </select>
 
-      <h3>Line Graph: {selectedColumns.join(" & ")}</h3>
+      <h3>Chart Type</h3>
+      <select value={chartType} onChange={handleChartTypeChange}>
+        <option value="line">Line Chart</option>
+        <option value="bar">Bar Chart</option>
+      </select>
+
+      <h3>Generated Chart</h3>
       <div className="scrollable-graph-container">
         <ResponsiveContainer
           width={graphData.length < 10 ? "100%" : graphData.length * 20}
           height={400}
         >
-          {graphData.length > 0 && (
+          {graphData.length > 0 && chartType === "line" && (
             <LineChart
               data={graphData}
               margin={{ top: 20, right: 20, left: 20, bottom: 80 }}
@@ -182,6 +185,20 @@ function App() {
                 />
               ))}
             </LineChart>
+          )}
+          {graphData.length > 0 && chartType === "bar" && (
+            <BarChart
+              data={graphData}
+              margin={{ top: 20, right: 20, left: 20, bottom: 80 }}
+            >
+              <CartesianGrid strokeDasharray="none" />
+              <XAxis dataKey="name" angle={-45} textAnchor="end" />
+              <YAxis />
+              <Tooltip />
+              {selectedColumns.map((column) => (
+                <Bar key={column} dataKey={column} fill="blue" />
+              ))}
+            </BarChart>
           )}
         </ResponsiveContainer>
       </div>
