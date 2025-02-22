@@ -122,6 +122,7 @@ input[type="file"]:hover {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
 }
 
 .responsive-container {
@@ -134,6 +135,7 @@ input[type="file"]:hover {
   margin: 40px auto;
   max-width: 1200px;
   width: 100%;
+  padding: 0 15px;
 }
 
 .recharts-cartesian-axis-tick-value {
@@ -191,14 +193,24 @@ input[type="file"]:hover {
   }
 
   .container {
-    margin: 20px;
+    margin: 20px auto;
+    padding: 0 10px;
   }
 
   select, button, input[type="file"] {
     font-size: 14px;
+    width: 100%;
   }
 
   .info-section, .graph-container, .insights, .pre-wrap {
     padding: 15px;
+  }
+
+  .scrollable-graph-container {
+    padding: 10px;
+  }
+
+  .insights pre {
+    font-size: 13px;
   }
 }
